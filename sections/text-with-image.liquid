@@ -1,0 +1,353 @@
+<section class="bh-qt__section Section {% unless section.settings.image %}Section--spacingNormal{% endunless %} section--text-with-images">
+  {%- capture section_content -%}
+    <div class="FeatureText__ContentWrapper">
+      <div class="FeatureText__Content bh-qt__content-wrapper">
+        {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+          <header class="SectionHeader">
+            {%- if section.settings.subheading != blank -%}
+              <h3 class="SectionHeader__SubHeading Heading bh-qt__subheading">{{ section.settings.subheading | escape }}</h3>
+            {%- endif -%}
+
+            {%- if section.settings.title != blank -%}
+              <h2 class="bh-qt__heading SectionHeader__Heading Heading u-h1">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.content != blank -%}
+              <div class="bh-qt__paragraph SectionHeader__Description Rte">
+                {{ section.settings.content }}
+              </div>
+            {%- endif -%}
+
+         
+          </header>
+        {%- endif -%}
+      </div>
+
+       <div class="bh-qt__img-wrapper">
+        {%- if section.settings.image_1 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_1 | img_url: '200x' }}" alt="{{ section.settings.image_1.alt | escape }}">
+          {%- if section.settings.link_text_1 != blank -%}
+            {%- if section.settings.link_url_1 != blank -%}
+              <a href="{{ section.settings.link_url_1 }}" class="bh-qt__button-link">{{ section.settings.link_text_1 | escape }}</a>
+              {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_1 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+        {%- if section.settings.image_2 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_2 | img_url: '200x' }}" alt="{{ section.settings.image_2.alt | escape }}">
+         {%- if section.settings.link_text_2 != blank -%}
+          {%- if section.settings.link_url_2 != blank -%}
+            <a href="{{ section.settings.link_url_2 }}" class="bh-qt__button-link">{{ section.settings.link_text_2 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_2 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+        {%- if section.settings.image_3 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_3 | img_url: '200x' }}" alt="{{ section.settings.image_3.alt | escape }}">
+         {%- if section.settings.link_text_3 != blank -%}
+          {%- if section.settings.link_url_3 != blank -%}
+            <a href="{{ section.settings.link_url_3 }}" class="bh-qt__button-link">{{ section.settings.link_text_3 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_3 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+        {%- if section.settings.image_4 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_4 | img_url: '200x' }}" alt="{{ section.settings.image_4.alt | escape }}">
+          {%- if section.settings.link_text_4 != blank -%}
+          {%- if section.settings.link_url_4 != blank -%}
+            <a href="{{ section.settings.link_url_4 }}" class="bh-qt__button-link">{{ section.settings.link_text_4 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_4 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+      </div>
+
+      <div class="bh-qt__img-wrapper">
+        {%- if section.settings.image_5 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_5 | img_url: '200x' }}" alt="{{ section.settings.image_5.alt | escape }}">
+          {%- if section.settings.link_text_5 != blank -%}
+          {%- if section.settings.link_url_5 != blank -%}
+            <a href="{{ section.settings.link_url_5 }}" class="bh-qt__button-link">{{ section.settings.link_text_5 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_5 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+        {%- if section.settings.image_6 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_6 | img_url: '200x' }}" alt="{{ section.settings.image_6.alt | escape }}">
+          {%- if section.settings.link_text_6 != blank -%}
+          {%- if section.settings.link_url_6 != blank -%}
+            <a href="{{ section.settings.link_url_6 }}" class="bh-qt__button-link">{{ section.settings.link_text_6 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_6 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+        {%- if section.settings.image_7 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_7 | img_url: '200x' }}" alt="{{ section.settings.image_7.alt | escape }}">
+          {%- if section.settings.link_text_7 != blank -%}
+          {%- if section.settings.link_url_7 != blank -%}
+            <a href="{{ section.settings.link_url_7 }}" class="bh-qt__button-link">{{ section.settings.link_text_7 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_7 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+        {%- if section.settings.image_8 != blank -%}
+        <div class="bh-qt__img-container">
+         <img class="bh-qt__img" src="{{ section.settings.image_8 | img_url: '200x' }}" alt="{{ section.settings.image_8.alt | escape }}">
+          {%- if section.settings.link_text_8 != blank -%}
+          {%- if section.settings.link_url_8 != blank -%}
+            <a href="{{ section.settings.link_url_8 }}" class="bh-qt__button-link">{{ section.settings.link_text_8 | escape }}</a>
+            {%- else -%}
+              <span class="bh-qt__button-link">{{ section.settings.link_text_8 | escape }}</span>
+            {%- endif -%}
+          {%- endif -%}
+         </div>
+        {%- endif -%}
+      </div>
+         {%- if section.settings.link_text != blank -%}
+            <a href="{{ section.settings.link_url }}" class="Button Button--primary bh-qt__button">{{ section.settings.link_text | escape }}</a>
+          {%- endif -%}
+    </div>
+  {%- endcapture -%}
+
+  {%- capture section_image -%}
+    {%- if section.settings.image != blank -%}
+      <div class="FeatureText__ImageWrapper">
+        {%- include 'image-size', sizes: '400,600,700,800,900,1000,1200', image: section.settings.image -%}
+
+        <div class="AspectRatio" style="max-width: {{ section.settings.image.width }}px; --aspect-ratio: {{ section.settings.image.aspect_ratio }}">
+          {%- assign image_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img class="Image--lazyLoad Image--slide{{ section.settings.image_position | capitalize }}" data-src="{{ image_url }}" data-expand="-200" data-widths="[{{ supported_sizes }}]" data-sizes="auto" alt="{{ section.settings.image.alt | escape }}">
+
+          <noscript>
+            <img src="{{ section.settings.image | img_url: '800x' }}" alt="{{ section.settings.image.alt | escape }}">
+          </noscript>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  <div class="FeatureText {% if section.settings.image != blank %}FeatureText--withImage FeatureText--image{{ section.settings.image_position | capitalize }}{% endif %}">
+    {%- if section.settings.image_position == 'left' -%}
+      {{- section_image -}}
+      {{- section_content -}}
+    {%- else -%}
+      {{- section_content -}}
+      {{- section_image -}}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text with image",
+  "class": "shopify-section--bordered",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub-heading",
+      "default": "Sub-heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>Add your own custom content to give more information about your store, availability details...</p>"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Quality Image 1",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_1",
+      "label": "Link text 1"
+    },
+      {
+      "type": "url",
+      "id": "link_url_1",
+      "label": "Link URL 1"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Quality Image 2",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_2",
+      "label": "Link text 2"
+    },
+    {
+      "type": "url",
+      "id": "link_url_2",
+      "label": "Link URL 2"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Quality Image 3",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_3",
+      "label": "Link text 3"
+    },
+    {
+      "type": "url",
+      "id": "link_url_3",
+      "label": "Link URL 3"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Quality Image 4",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_4",
+      "label": "Link text 4"
+    },
+    {
+      "type": "url",
+      "id": "link_url_4",
+      "label": "Link URL 4"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Quality Image 5",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_5",
+      "label": "Link text 5"
+    },
+    {
+      "type": "url",
+      "id": "link_url_5",
+      "label": "Link URL 5"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Quality Image 6",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_6",
+      "label": "Link text 6"
+    },
+    {
+      "type": "url",
+      "id": "link_url_6",
+      "label": "Link URL 6"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_7",
+      "label": "Quality Image 7",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_7",
+      "label": "Link text 7"
+    },
+    {
+      "type": "url",
+      "id": "link_url_7",
+      "label": "Link URL 7"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_8",
+      "label": "Quality Image 8",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "link_text_8",
+      "label": "Link text 8"
+    },
+    {
+      "type": "url",
+      "id": "link_url_8",
+      "label": "Link URL 8"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Rich text with image",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

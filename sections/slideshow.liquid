@@ -1,0 +1,549 @@
+{%- capture flickity_options -%}
+{
+  "prevNextButtons": false,
+  "setGallerySize": {% if section.settings.show_fullscreen %}false{% else %}true{% endif %},
+  "adaptiveHeight": {% if section.settings.show_fullscreen %}false{% else %}true{% endif %},
+  "wrapAround": true,
+  "dragThreshold": 15,
+  "pauseAutoPlayOnHover": false,
+  "adaptiveHeight": false,
+  "autoPlay": {% if section.settings.autoplay %}{{ section.settings.cycle_speed | times: 1000 }}{% else %}false{% endif %},
+  "pageDots": {% if section.blocks.size > 1 %}true{% else %}false{% endif %}
+}
+{%- endcapture -%}
+
+<section class="bh-slideshow__section" id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="slideshow">
+  <div class="Slideshow {% if section.settings.show_fullscreen %}Slideshow--fullscreen{% endif %}">
+    <div class="Slideshow__Carousel {% if section.settings.show_arrow %}Slideshow__Carousel--withScrollButton{% endif %} Carousel Carousel--fadeIn {% if section.settings.show_fullscreen %}Carousel--fixed{% endif %} Carousel--insideDots"
+         data-flickity-config='{{ flickity_options }}'>
+      {%- for block in section.blocks -%}
+        {%- capture slide_content -%}
+          {%- comment -%}
+            Implementation note: this is an art driven image selection so it would have been better to be able to use the "picture" tag instead. However,
+            as the mobile and desktop image could have different aspect ratio, the image allocation space would not have work properly without explicitly
+            distinguishing the two images, hence the two containers.
+          {%- endcomment -%}
+
+      	  {%- assign tablet_image = block.settings.tablet_image | default: block.settings.image -%}
+          {%- assign mobile_image = block.settings.mobile_image | default: block.settings.image -%}
+
+          {%- if mobile_image -%}
+            <div class="Slideshow__ImageContainer {% if block.settings.apply_overlay %}Image--contrast{% endif %} {% unless section.settings.show_fullscreen %}AspectRatio{% endunless %} hidden-tablet-and-up"
+                 style="{% unless section.settings.show_fullscreen %}--aspect-ratio: {{ mobile_image.aspect_ratio }};{% endunless %} background-image: url({{ mobile_image | img_url: '1x1', format: 'jpg' }})">
+                <img class="Slideshow__Image bh-slideshow__main-img Image--lazyLoad"
+                     src="{{ mobile_image | img_url: '1x1' }}"
+                     data-src="{{ mobile_image | img_url: 'x600' }}"
+                     alt="{{ mobile_image.alt | escape }}">
+
+                <noscript>
+                  <img class="Slideshow__Image bh-slideshow__main-img" src="{{ mobile_image | img_url: 'x500' }}" alt="{{ mobile_image.alt | escape }}">
+                </noscript>
+            </div>
+          {%- endif -%}
+
+          {%- if tablet_image -%}
+            <div class="Slideshow__ImageContainer {% if block.settings.apply_overlay %}Image--contrast{% endif %} {% unless section.settings.show_fullscreen %}AspectRatio{% endunless %} hidden-lap-and-up hidden-phone"
+                 style="{% unless section.settings.show_fullscreen %}--aspect-ratio: {{ tablet_image.aspect_ratio }};{% endunless %} background-image: url({{ tablet_image | img_url: '1x1', format: 'jpg' }})">
+                <img class="Slideshow__Image bh-slideshow__main-img Image--lazyLoad"
+                     src="{{ tablet_image | img_url: '1x1' }}"
+                     data-src="{{ tablet_image | img_url: 'x600' }}"
+                     alt="{{ tablet_image.alt | escape }}">
+
+                <noscript>
+                  <img class="Slideshow__Image bh-slideshow__main-img" src="{{ tablet_image | img_url: 'x500' }}" alt="{{ tablet_image.alt | escape }}">
+                </noscript>
+            </div>
+          {%- endif -%}
+      
+          {%- if block.settings.image -%}
+            <div class="Slideshow__ImageContainer bh-slideshow__ImageContainer {% if block.settings.apply_overlay %}Image--contrast{% endif %} {% unless section.settings.show_fullscreen %}AspectRatio AspectRatio--withFallback{% endunless %} hidden-tablet hidden-phone"
+                 style="{% unless section.settings.show_fullscreen %}padding-bottom: {{ 100.0 | divided_by: block.settings.image.aspect_ratio }}%; --aspect-ratio: {{ block.settings.image.aspect_ratio }};{% endunless %} background-image: url({{ block.settings.image | img_url: '1x1', format: 'jpg' }})">
+              {% assign image_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+
+              <img class="Slideshow__Image Image--lazyLoad hide-no-js"
+                   data-src="{{ image_url }}"
+                   data-optimumx="1.2"
+                   data-widths="[400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200]"
+                   data-sizes="auto"
+                   alt="{{ block.settings.image.alt | escape }}">
+
+              <noscript>
+                <img class="Slideshow__Image" src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.image.alt | escape }}">
+              </noscript>
+            </div>
+          {%- else -%}
+            <div class="Slideshow__ImageContainer bh-slideshow__ImageContainer {% if block.settings.apply_overlay %}Image--contrast{% endif %} {% if section.settings.show_fullscreen %}PlaceholderBackground{% endif %} PlaceholderSvg--dark">
+              {%- capture placeholder -%}{% cycle 'lifestyle-1', 'lifestyle-2' %}{%- endcapture -%}
+              {{ placeholder | placeholder_svg_tag: 'Slideshow__Image PlaceholderBackground__Svg' }}
+            </div>
+          {%- endif -%}
+
+          {%- capture slideshow_content -%}
+            <div class="bh-slideshow__header-wrapper">
+            {%- if block.settings.subheading != blank -%}
+              <h3 class="SectionHeader__SubHeading Heading u-h6 bh-slideshow__title">{{ block.settings.subheading | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.slidetext != blank -%}
+              <p class="SectionHeader__Text bh-slideshow__text">{{ block.settings.slidetext | escape | newline_to_br }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.recommendation_title != blank -%}
+              <div>
+                <a href="{{ section.settings.recommendation_url }}" class="Button Button--primary bh-slideshow__reccomendation  ">{{ section.settings.recommendation_title | escape }}</a>
+              </div>
+            {%- endif -%}
+            </div>
+
+            {%- if block.settings.button_1_text != blank and block.settings.button_2_text != blank and block.settings.button_3_text != blank and block.settings.button_4_text != blank -%}
+              {%- assign has_two_buttons = true -%}
+            {%- else -%}
+              {%- assign has_two_buttons = false -%}
+            {%- endif -%}
+
+            {%- if block.settings.button_1_text != blank or block.settings.button_2_text != blank or block.settings.button_3_text != blank or block.settings.button_4_text != blank-%}
+             
+              <div class="SectionHeader__ButtonWrapper">
+
+                <div class="bh-slideshow__btn-grid">
+
+                  {%- if block.settings.button_1_text != blank -%}
+                    <div class="bh-slideshow__btn-container bh-slideshow__btn-container-1 test">
+                      <a href="{{ block.settings.button_1_link }}" class="bh-slideshow__img-container">
+                        <img class="bh-slideshow__button-img" src="{{ block.settings.button_1_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+                      </a>
+                      <a href="{{ block.settings.button_1_link }}" class="bh-slideshow__button-link-1 bh-slideshow__button-link">
+                        <span class="first-span">{{ block.settings.button_1_text | escape }}</span>
+                      </a>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.button_2_text != blank -%}
+                    <div class="bh-slideshow__btn-container bh-slideshow__btn-container-2">
+                      <a href="{{ block.settings.button_2_link }}" class="bh-slideshow__img-container">
+                        <img class="bh-slideshow__button-img" src="{{ block.settings.button_2_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+                      </a>
+                      <a href="{{ block.settings.button_2_link }}" class="bh-slideshow__button-link-2 bh-slideshow__button-link">
+                        <span class="first-span">{{ block.settings.button_2_text | escape }}</span>
+                      </a>
+                    </div>
+                  {%- endif -%}
+
+                   {%- if block.settings.button_3_text != blank -%}
+                    <div class="bh-slideshow__btn-container bh-slideshow__btn-container-3">
+                    <a href="{{ block.settings.button_3_link }}" class="bh-slideshow__img-container">
+                      <img class="bh-slideshow__button-img" src="{{ block.settings.button_3_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+                    </a>
+                    <a href="{{ block.settings.button_3_link }}" class="bh-slideshow__button-link-3 bh-slideshow__button-link">
+                      <span class="first-span">{{ block.settings.button_3_text | escape }}</span>
+                    </a>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.button_4_text != blank -%}
+                    <div class="bh-slideshow__btn-container bh-slideshow__btn-container-4">
+                      <a href="{{ block.settings.button_4_link }}" class="bh-slideshow__img-container">
+                        <img class="bh-slideshow__button-img" src="{{ block.settings.button_4_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+                      </a>
+                      <a href="{{ block.settings.button_4_link }}" class="bh-slideshow__button-link-4 bh-slideshow__button-link">
+                      <span class="first-span">{{ block.settings.button_4_text | escape }}</span>
+                      </a>
+                    </div>
+                  {%- endif -%}
+
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- if slideshow_content != blank -%}
+            <div class="bh-slideshow__content Slideshow__Content Slideshow__Content--{{ block.settings.content_position }}">
+              <header class="SectionHeader">
+                {{ slideshow_content }}
+              </header>
+            </div>
+          {%- endif -%}
+        {%- endcapture -%}
+
+        {%- comment -%}This code allows to cover a common use case where merchant would like to have a clickable image{%- endcomment -%}
+
+        {%- if block.settings.button_1_text == blank and block.settings.button_1_link != blank -%}
+          <a href="{{ block.settings.button_1_link }}" id="Slide{{ block.id }}" class="Slideshow__Slide Carousel__Cell {% if forloop.first %}is-selected{% endif %}" {% if forloop.first %}style="visibility: visible"{% endif %} data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {{- slide_content -}}
+          </a>
+        {%- else -%}
+          <div id="Slide{{ block.id }}" class="Slideshow__Slide Carousel__Cell {% if forloop.first %}is-selected{% endif %}" {% if forloop.first %}style="visibility: visible"{% endif %} data-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {{- slide_content -}}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_arrow -%}
+      <button data-href="#section-{{ section.id }}-end" class="Slideshow__ScrollButton RoundButton RoundButton--medium" aria-label="{{ 'general.accessibility.scroll_to_content' | t }}" data-animate-bottom>
+        {%- include 'icon' with 'arrow-bottom' -%}
+      </button>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.mobile_button_1_text != blank -%}
+  <div class="bh-slideshow__mobile-btns">
+    <div class="bh-slideshow__mobile-grid">
+      {%- if section.settings.mobile_button_1_text != blank -%}
+        <div class="bh-slideshow__btn-container bh-slideshow__btn-container-1 test">
+          <a href="{{ section.settings.mobile_button_1_link }}" class="bh-slideshow__img-container">
+            <img class="bh-slideshow__button-img" src="{{ section.settings.mobile_button_1_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+          </a>
+          <a href="{{ section.settings.mobile_button_1_link }}" class="bh-slideshow__button-link bh-slideshow__button-link-1">
+            <span class="first-span">{{ section.settings.mobile_button_1_text | escape }}</span>
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.mobile_button_2_text != blank -%}
+        <div class="bh-slideshow__btn-container bh-slideshow__btn-container-2">
+          <a href="{{ section.settings.mobile_button_2_link }}" class="bh-slideshow__img-container">
+            <img class="bh-slideshow__button-img" src="{{ section.settings.mobile_button_2_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+          </a>
+          <a href="{{ section.settings.mobile_button_2_link }}" class="bh-slideshow__button-link bh-slideshow__button-link-2">
+            <span class="first-span">{{ section.settings.mobile_button_2_text | escape }}</span>
+          </a>
+        </div>
+      {%- endif -%}
+
+        {%- if section.settings.mobile_button_3_text != blank -%}
+        <div class="bh-slideshow__btn-container bh-slideshow__btn-container-3">
+        <a href="{{ section.settings.mobile_button_3_link }}" class="bh-slideshow__img-container">
+          <img class="bh-slideshow__button-img" src="{{ section.settings.mobile_button_3_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+        </a>
+        <a href="{{ section.settings.mobile_button_3_link }}" class="bh-slideshow__button-link bh-slideshow__button-link-3">
+          <span class="first-span">{{ section.settings.mobile_button_3_text | escape }}</span>
+        </a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.mobile_button_4_text != blank -%}
+        <div class="bh-slideshow__btn-container bh-slideshow__btn-container-4">
+          <a href="{{ section.settings.mobile_button_4_link }}" class="bh-slideshow__img-container">
+            <img class="bh-slideshow__button-img" src="{{ section.settings.mobile_button_4_image | img_url: '1000x' }}" alt="{{ button_1_image.alt | escape }}">
+          </a>
+          <a href="{{ section.settings.mobile_button_4_link }}" class="bh-slideshow__button-link bh-slideshow__button-link-4">
+          <span class="first-span">{{ section.settings.mobile_button_4_text | escape }}</span>
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <span id="section-{{ section.id }}-end" class="Anchor"></span>
+</section>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "class": "shopify-section--slideshow",
+  "max_blocks": 7,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_fullscreen",
+      "label": "Show full-screen images",
+      "info": "If enabled, images will be resized to fit the entire screen.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show bottom arrow",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto rotate between slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cycle_speed",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "unit": "sec",
+      "label": "Change slides every",
+      "default": 5
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button text",
+      "default": "#363636"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "recommendation_title",
+      "label": "Recommendation Button Text"
+    },
+    {
+      "type": "url",
+      "id": "recommendation_url",
+      "label": "Recommendation Button Url"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Button 1"
+    },
+    {
+      "type": "text",
+      "id": "mobile_button_1_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "mobile_button_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_button_1_image",
+      "label": "Button 1 Image"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Button 2"
+    },
+    {
+      "type": "text",
+      "id": "mobile_button_2_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "mobile_button_2_link",
+      "label": "Link"
+    },
+      {
+      "type": "image_picker",
+      "id": "mobile_button_2_image",
+      "label": "Button 2 Image"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Button 3"
+    },
+    {
+      "type": "text",
+      "id": "mobile_button_3_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "mobile_button_3_link",
+      "label": "Link"
+    },
+      {
+      "type": "image_picker",
+      "id": "mobile_button_3_image",
+      "label": "Button 3 Image"
+    },
+      {
+      "type": "header",
+      "content": "Mobile Button 4"
+    },
+    {
+      "type": "text",
+      "id": "mobile_button_4_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "mobile_button_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_button_4_image",
+      "label": "Button 4 Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1800 x 1200px .jpg recommended"
+        },
+		{
+          "type": "image_picker",
+          "id": "tablet_image",
+          "label": "Image",
+          "info": "1024 x 1281px .jpg recommended. If none is set, desktop image will be cropped."
+		},
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "750 x 1100px .jpg recommended. If none is set, desktop image will be cropped."
+        },
+        {
+          "type": "checkbox",
+          "id": "apply_overlay",
+          "label": "Apply overlay on image",
+          "info": "This can improve text visibility.",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+            {
+              "value": "middleLeft",
+              "label": "Middle left"
+            },
+            {
+              "value": "middleCenter",
+              "label": "Middle center"
+            },
+            {
+              "value": "middleRight",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottomLeft",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottomCenter",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottomRight",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "bottomLeft"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Sub-heading",
+          "default": "Slide title"
+        },
+        {
+          "type": "textarea",
+          "id": "slidetext",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Button 1"
+        },
+        {
+          "type": "text",
+          "id": "button_1_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "button_1_image",
+          "label": "Button 1 Image"
+        },
+        {
+          "type": "header",
+          "content": "Button 2"
+        },
+        {
+          "type": "text",
+          "id": "button_2_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Link"
+        },
+         {
+          "type": "image_picker",
+          "id": "button_2_image",
+          "label": "Button 2 Image"
+        },
+        {
+          "type": "header",
+          "content": "Button 3"
+        },
+        {
+          "type": "text",
+          "id": "button_3_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "button_3_link",
+          "label": "Link"
+        },
+         {
+          "type": "image_picker",
+          "id": "button_3_image",
+          "label": "Button 3 Image"
+        },
+         {
+          "type": "header",
+          "content": "Button 4"
+        },
+        {
+          "type": "text",
+          "id": "button_4_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "button_4_link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "button_4_image",
+          "label": "Button 4 Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Image",
+      "name": "Slideshow",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

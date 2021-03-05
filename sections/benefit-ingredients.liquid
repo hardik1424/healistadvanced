@@ -1,0 +1,261 @@
+
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.page == page.handle %}
+      <div class="s-benefit-ingredients__outer">
+        <div class="container">
+          {% if block.settings.sub_title != blank %}
+            <h3 class="s-benefit-ingredients__sub-title">
+              {{ block.settings.sub_title }}
+            </h3>
+          {% endif %}
+
+          {% if block.settings.title != blank %}
+            <h1 class="s-benefit-ingredients__title">
+              {{ block.settings.title }}
+            </h1>
+          {% endif %}
+
+          <div class="swiper-container">
+            <div class="s-benefit-ingredients__inner swiper-wrapper">
+              {% for index in (1..9) %}
+                {% assign img = 'ing_image_' | append: index %}
+                {% assign ttl = 'ing_title_' | append: index %}
+                {% assign desc = 'ing_desc_' | append: index %}
+
+                {% if block.settings[desc] != blank %}
+                  <div class="s-benefit-ingredients__item swiper-slide">
+                    {% assign image_size = "x262" %}
+                    {% assign image = block.settings[img] %}
+  
+                    <img class="Image--lazyLoad" 
+                        data-src="{{ image | img_url: image_size }}" 
+                        data-srcset="{{ image | img_url: image_size }},
+                                {{ image | img_url: image_size, scale: 2 }} 2x,
+                                {{ image | img_url: image_size, scale: 3 }} 3x" 
+                        alt="{{ image.alt | escape }}">
+
+                    <h4>{{ block.settings[ttl] }}</h4>    
+                    <div>{{ block.settings[desc] }}</div>    
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Benefit ingredients",
+    "tag": "section", 
+    "class": "s-benefit-ingredients",
+    "blocks": [
+      {
+        "type": "ingredients",
+        "name": "Benefit ingredients",
+        "settings": [  
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "id": "sub_title",
+            "type": "text",
+            "label": "Sub title"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title",
+            "default": "Explore The Ingredients"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 1"
+          },
+          {
+            "id": "ing_image_1",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_1",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_1",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 2"
+          },
+          {
+            "id": "ing_image_2",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_2",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_2",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 3"
+          },
+          {
+            "id": "ing_image_3",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_3",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_3",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 4"
+          },
+          {
+            "id": "ing_image_4",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_4",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_4",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 5"
+          },
+          {
+            "id": "ing_image_5",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_5",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_5",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 6"
+          },
+          {
+            "id": "ing_image_6",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_6",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_6",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 7"
+          },
+          {
+            "id": "ing_image_7",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_7",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_7",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 8"
+          },
+          {
+            "id": "ing_image_8",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_8",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_8",
+            "type": "richtext",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Ingredients 9"
+          },
+          {
+            "id": "ing_image_9",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "ing_title_9",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "ing_desc_9",
+            "type": "richtext",
+            "label": "Description"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

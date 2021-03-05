@@ -1,0 +1,125 @@
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.page == page.handle %}
+      <div class="s-content-with-imege__outer" {% if block.settings.bg_color != blank %}style="background-color: {{ block.settings.bg_color }}"{% endif %}>
+        <div class="container s-content-with-imege__inner">
+          {% if block.settings.heading != blank %}
+            <h2 class="s-content-with-imege__heading">
+              <span>{{ block.settings.heading }}</span>
+            </h2>
+          {% endif %}
+
+          {% if block.settings.top_content != blank %}
+            <div class="s-content-with-imege__top-content">
+              {{ block.settings.top_content }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.image != blank %}
+            <div class="s-content-with-imege__img-wrap">
+              {% assign image_size = "936x" %}
+              {% assign image = block.settings.image %}
+
+              <img class="Image--lazyLoad"
+                  data-src="{{ image | img_url: image_size }}" 
+                  data-srcset="{{ image | img_url: image_size }},
+                          {{ image | img_url: image_size, scale: 2 }} 2x,
+                          {{ image | img_url: image_size, scale: 3 }} 3x" 
+                  alt="{{ image.alt | escape }}">
+            </div>
+          {% endif %}
+
+          {% if block.settings.bottom_content_left != blank or block.settings.bottom_content_right != blank %}
+            <div class="s-content-with-imege__bottom-content">
+              {% if block.settings.bottom_content_left != blank %}
+                <div>
+                  {% if block.settings.bottom_title_left != blank %}
+                    <h3>{{ block.settings.bottom_title_left  }}</h3>
+                  {% endif %}
+                  {{ block.settings.bottom_content_left }}
+                </div>
+              {% endif %}
+              
+              {% if block.settings.bottom_content_right != blank %}
+                <div>
+                  {% if block.settings.bottom_title_right != blank %}
+                    <h3>{{ block.settings.bottom_title_right  }}</h3>
+                  {% endif %}
+                  {{ block.settings.bottom_content_right }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Content-w-image",
+    "tag": "section",
+    "class": "s-content-with-imege",
+    "blocks": [
+      {
+        "type": "content_w_image",
+        "name": "Content-w-image",
+        "settings": [ 
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "id": "bg_color",
+            "type": "color",
+            "label": "Background color"
+          },
+          {
+            "id": "heading",
+            "type": "text",
+            "label": "Heading"
+          },
+          {
+            "id": "top_content",
+            "type": "textarea",
+            "label": "Top content"
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "bottom_title_left",
+            "type": "text",
+            "label": "Bottom title left"
+          },
+          {
+            "id": "bottom_content_left",
+            "type": "html",
+            "label": "Bottom content left"
+          },
+          {
+            "id": "bottom_title_right",
+            "type": "text",
+            "label": "Bottom title right"
+          },
+          {
+            "id": "bottom_content_right",
+            "type": "html",
+            "label": "Bottom content right"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

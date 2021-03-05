@@ -1,0 +1,166 @@
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.page == page.handle %}
+      <div class="s-benefit-top-banner__outer">
+        <div class="container s-benefit-top-banner__inner">
+          <div class="s-benefit-top-banner__content" {% if block.settings.accent_color != blank %}style="background-color: {{ block.settings.accent_color }}"{% endif %}>
+            <div class="s-benefit-top-banner__heading">
+              {% if block.settings.overlay_image != blank %}
+                <div class="s-benefit-top-banner__overlay-image">
+                  {% assign image_size = "140x" %}
+                  {% assign image = block.settings.overlay_image %}
+
+                  <img class="Image--lazyLoad"
+                      data-src="{{ image | img_url: image_size }}" 
+                      data-srcset="{{ image | img_url: image_size }},
+                            {{ image | img_url: image_size, scale: 2 }} 2x,
+                            {{ image | img_url: image_size, scale: 3 }} 3x" 
+                      alt="{{  image.alt | escape }}">
+                </div>    
+              {% endif %}
+            
+              {% if block.settings.title != blank %}
+                <h1 class="s-benefit-top-banner__title">
+                  {{ block.settings.title }}
+                </h1>
+              {% endif %}
+            </div>
+          
+            {% if block.settings.sub_title != blank %}
+              <div class="s-benefit-top-banner__sub-title">
+                {{ block.settings.sub_title }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.bottom_text != blank %}
+              <div class="s-benefit-top-banner__bottom-text">
+                {{ block.settings.bottom_text }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.button_url != blank %}
+              <a href="{{ block.settings.button_url }}" class="Button Button--primary s-benefit-top-banner__btn">{{ block.settings.button_text | default: 'Get a recommendation' }}</a>
+            {% endif %}
+          </div>
+
+          {% if block.settings.bg_image_desk != blank or block.settings.bg_image_mobile != blank %}
+            <div class="s-benefit-top-banner__img-wrap">
+              {% assign image_size = "1024x" %}
+              
+              {% if block.settings.bg_image_mobile != blank %}
+                {% assign image = block.settings.bg_image_mobile %}
+              {% else %} 
+                {% assign image = block.settings.bg_image_desk %}
+              {% endif %}
+
+              <img class="Image--lazyLoad"
+                  data-src="{{ image | img_url: image_size }}" 
+                  data-srcset="{{ image | img_url: image_size }},
+                        {{ image | img_url: image_size, scale: 2 }} 2x,
+                        {{ image | img_url: image_size, scale: 3 }} 3x" 
+                  alt="{{  image.alt | escape }}">
+            </div>   
+          {% endif %}
+        </div>
+      </div>
+
+      <style>
+        @media screen and (min-width: 768px) {
+          .s-benefit-top-banner__outer {
+            {% if block.settings.bg_color != blank %}
+              background-color: {{ block.settings.bg_color }};
+            {% endif %}
+
+            {% if block.settings.bg_image_desk != blank %}
+              background-image: url("{{ block.settings.bg_image_desk | img_url: '2048x' }}");
+            {% endif %} 
+
+            {% if block.settings.bg_image_desk != blank %}
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: cover;
+            {% endif %}
+          }
+        }
+      </style>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Benefit top banner",
+    "tag": "section",
+    "class": "s-benefit-top-banner",
+    "blocks": [
+      {
+        "type": "top_banner",
+        "name": "Top banner",
+        "settings": [  
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "id": "accent_color",
+            "type": "color",
+            "label": "Accent color"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "sub_title",
+            "type": "richtext",
+            "label": "Sub title"
+          },
+          {
+            "id": "overlay_image",
+            "type": "image_picker",
+            "label": "Overlay Image"
+          },
+          {
+            "id": "bottom_text",
+            "type": "text",
+            "label": "Bottom text"
+          },
+          {
+            "id": "button_text",
+            "type": "text",
+            "label": "Button text"
+          },
+          {
+            "id": "button_url",
+            "type": "url",
+            "label": "Button url"
+          },
+          {
+            "id": "bg_image_desk",
+            "type": "image_picker",
+            "label": "Background image (desktop)"
+          },
+          {
+            "id": "bg_image_mobile",
+            "type": "image_picker",
+            "label": "Background image (mobile)"
+          },
+          {
+            "id": "bg_color",
+            "type": "color",
+            "label": "Background color"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

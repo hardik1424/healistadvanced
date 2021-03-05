@@ -1,0 +1,73 @@
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.video_url != blank and block.settings.page == page.handle %}
+      <div class="s-video__outer">
+        <div class="container s-video__inner">
+          {% if block.settings.heading != blank %}
+            <h2 class="container s-video__heading">{{ block.settings.heading }}</h2>
+          {% endif %}
+
+          <div class="s-video__content">
+            {% if block.settings.poster != blank %}
+              <div class="s-video__poster" style="background-image: url({{ block.settings.poster | img_url: '1024x' }});">
+                <span class="s-video__btn-play">{% include 'icon' with 'play' %}</span>
+              </div>
+            {% endif %}
+
+            {% if block.settings.video_url.type == 'youtube' %}
+              <iframe class="Image--lazyLoad" data-src="//www.youtube.com/embed/{{ block.settings.video_url.id }}?autoplay=1&showinfo=0&controls=1&rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+            {% elsif block.settings.video_url.type == 'vimeo' %}
+              <iframe class="Image--lazyLoad" data-src="//player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay=1&portrait=0&byline=0" frameborder="0"></iframe>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Video",
+    "tag": "section",
+    "class": "s-video",
+    "blocks": [
+      {
+        "type": "video",
+        "name": "Video",
+        "settings": [  
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "id": "heading",
+            "type": "text",
+            "label": "Heading",
+            "default": "Video Title Lorem Ipsum"
+          },
+          {
+            "id": "poster",
+            "type": "image_picker",
+            "label": "Poster"
+          },
+          {
+            "type": "video_url",
+            "accept": ["vimeo", "youtube"],
+            "id": "video_url",
+            "label": "Video URL",
+            "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

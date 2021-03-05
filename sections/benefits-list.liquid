@@ -1,0 +1,111 @@
+{% if section.settings.enable_section and section.blocks.size > 0 %}
+  <div class="s-benefit-list__outer">
+    <div class="container">
+      {% if section.settings.heading != blank %}
+        <h2 class="s-benefit-list__heading">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      <div class="s-benefit-list__inner">
+        {% for block in section.blocks %}
+          {% if block.settings.page != blank and block.settings.page != page.handle %}
+            <div class="s-benefit-list__item">
+              {% assign benefit_page = pages[block.settings.page] %}
+              {% assign image_size = '100x' %}
+              {% assign image = block.settings.image %}
+
+              <img class="Image--lazyLoad"
+                  data-src="{{ image | img_url: image_size }}" 
+                  data-srcset="{{ image | img_url: image_size }},
+                          {{ image | img_url: image_size, scale: 2 }} 2x,
+                          {{ image | img_url: image_size, scale: 3 }} 3x" 
+                  alt="{{  image.alt | escape }}">
+
+              <a href="{{ benefit_page.url }}" class="Button block-{{ block.id }}">
+                {{ block.settings.title | default: benefit_page.title }}
+              </a> 
+
+              {% if block.settings.accent_color != blank %}
+                <style>
+                  .block-{{ block.id }} {
+                    border: 1px solid {{ block.settings.accent_color }} !important;
+                  }
+
+                  .block-{{ block.id }}:before {
+                    background-color: {{ block.settings.accent_color }};
+                  }
+                </style>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <script type="text/javascript">
+        var $benefitGrid = $('.s-benefit-list__inner');
+        var $halfWindowWidth = $( window ).width()/2;
+        var $secondGridItem = $benefitGrid.find('.s-benefit-list__item').eq(1);
+        var $secondGridItemWidth = $secondGridItem.innerWidth();
+        var $secondGridItemLeft = $secondGridItem.offset().left;
+        var $secondGridItemMiddle = $secondGridItemLeft - ($secondGridItemWidth/2);
+        $(function() {
+          if (window.innerWidth < 530) {
+            $benefitGrid.animate({
+              scrollLeft: $secondGridItemWidth - ($halfWindowWidth - ($secondGridItemMiddle))
+            }, 1000);
+          }
+        });
+      </script>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Benefits list",
+    "tag": "section",
+    "class": "s-benefits-list",
+    "settings": [
+      {
+        "id": "enable_section",
+        "type": "checkbox",
+        "label": "Enable section",
+        "default": true
+      },
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Heading"
+      }
+    ],
+    "blocks": [ 
+      {
+        "type": "benefit",
+        "name": "Benefit",
+        "settings": [
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "accent_color",
+            "type": "color",
+            "label": "Accent color"
+          },
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Benefit page"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

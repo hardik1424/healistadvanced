@@ -1,0 +1,175 @@
+{%- comment -%}
+--------------------------------------------------------------------------------------------------------------------
+CONTENT FOR NORMAL TEMPLATE
+--------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign active_tags = '' -%}
+
+{%- for tag in current_tags -%}
+  {%- assign tag_as_handle = tag | replace: '&#39;', '' | replace: '&#34;', '' | handle -%}
+  {%- assign active_tags = active_tags | append: tag_as_handle -%}
+  {%- unless forloop.last -%}
+    {%- assign active_tags = active_tags | append: '+' -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+{%- capture section_settings -%}
+{
+  "collectionUrl": {{ collection.url | default: '/collections/all' | json }},
+  "currentTags": {% if active_tags != blank %}{{ active_tags | split: '+' | json }}{% else %}[]{% endif %},
+  "sortBy": {{ collection.sort_by | default: collection.default_sort_by | json }},
+  "filterPosition": {{ section.settings.filter_position | json }}
+}
+{%- endcapture -%}
+
+{%- capture collection_inner -%}
+  {%- comment -%}This is the common part to both template{%- endcomment -%}
+  <div class="ProductListWrapper">
+    <div class="ProductList ProductList--grid  Grid" data-mobile-count="2" data-desktop-count="3">
+        {%- for product in collections.all.products -%}
+        {{product}}
+          <div class="Grid__Cell 1/2--phone 1/2--tablet-and-up 1/3--desk ">
+            {%- include 'product-item', show_product_info: true, show_vendor: section.settings.show_vendor, show_color_swatch: section.settings.show_color_swatch, show_labels: true -%}
+          </div>
+        {%- endfor -%}
+    </div>
+  </div>
+{%- endcapture -%}
+
+{% capture collection_filter%}
+  <div class="CollectionFilters bh-shop__collection-filters">
+    <hr class="bh-shop__hr" />
+    <div class="Collapsible Collapsible--padded Collapsible--autoExpand">
+
+      <button
+        type="button"
+        class="Collapsible__Button Heading u-h6 bh-shop__bold"
+        data-action="toggle-collapsible"
+        aria-expanded="false"
+      >
+        Benefits<span class="Collapsible__Plus"></span>
+      </button>
+
+      <div class="Collapsible__Inner">
+        <div class="Collapsible__Content">
+          <ul class="Linklist">
+
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="benefits_calm"
+                data-action="toggle-tag"
+              >
+                Calm
+              </button>
+            </li>
+
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="benefits_relief"
+                data-action="toggle-tag"
+              >
+                Relief
+              </button>
+            </li>
+
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="benefits_sleep"
+                data-action="toggle-tag"
+              >
+                Sleep
+              </button>
+            </li>
+            
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="benefits_well-being"
+                data-action="toggle-tag"
+              >
+                Well-being
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="bh-shop__hr" />
+    <div class="Collapsible Collapsible--padded Collapsible--autoExpand">
+      <button
+        type="button"
+        class="Collapsible__Button Heading u-h6 bh-shop__bold"
+        data-action="toggle-collapsible"
+        aria-expanded="false"
+      >
+        Categories<span class="Collapsible__Plus"></span>
+      </button>
+
+      <div class="Collapsible__Inner">
+        <div class="Collapsible__Content">
+          <ul class="Linklist">
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="categories_chews"
+                data-action="toggle-tag"
+              >
+                Chews
+              </button>
+            </li>
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="categories_lotions"
+                data-action="toggle-tag"
+              >
+                Lotions
+              </button>
+            </li>
+            <li class="Linklist__Item ">
+              <button
+                type="button"
+                class=" bh-shop__filter-link Link Link--primary "
+                data-tag="categories_tinctures"
+                data-action="toggle-tag"
+              >
+                Tinctures
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="Button Button--secondary"
+      data-action="reset-tags"
+      style="display: none"
+    >
+      Reset
+    </button>
+  </div>
+{%- endcapture -%}
+
+<section data-section-id="{{ section.id }}" data-section-type="collection" data-section-settings='{{ section_settings }}'>
+  <div class="CollectionMain">
+    <div class="CollectionInner">
+      <div class="CollectionInner__Sidebar CollectionInner__Sidebar--withTopToolbar hidden-pocket">
+        {{ collection_filter }}
+      </div>
+      <div class="CollectionInner__Products">
+        {{ collection_inner }}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+{%- capture flickity_options -%}
+{
+  "prevNextButtons": false,
+  "wrapAround": true,
+  "dragThreshold": 16,
+  "pageDots": {% if section.blocks.size > 1 %}true{% else %}true{% endif %},
+  "autoPlay": {% if section.settings.autoplay %}{{ section.settings.cycle_speed | times: 1000 }}{% else %}false{% endif %}
+}
+{%- endcapture -%}
+
+{%- assign should_show_nav = false -%}
+
+{%- for block in section.blocks -%}
+  {%- if block.settings.logo -%}
+    {%- assign should_show_nav = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<section class="bh-testimonial__section Section Section--spacingNormal" id="section-{{ section.id }}" data-section-id="{{ section.id }}" >
+  <h2 class="bh-qt__heading TestimonialHeading SectionHeader__Heading Heading u-h1">{{ section.settings.title }}</h2>
+  <div class="Testimonial-Wrapper {% if should_show_nav %}TestimonialList--withNav{% endif %} Container">
+    {%- for block in section.blocks -%}
+      <div id="block-{{ block.id }}" class="Testimonial-Block" {{ block.shopify_attributes }}>
+        <img class="testimonial-img" src="{{ block.settings.slide_image | img_url: '600x' }}" alt="{{ block.settings.side_image.alt | escape }}"/>
+        <span class="testimonial-title">{{ block.settings.title }}</span>
+        <span class="testimonial-quote">{{ block.settings.quote }}</span>
+        <span class="testimonial-author">{{ block.settings.author }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "slide_image"
+        },
+		{
+		  "type": "text",
+		  "id": "title",
+		  "label": "Title"
+		},
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>Share what your customers are saying about your products, your company...</p>",
+          "info": "For best results, keep the word count consistent in each quote."
+        },
+      	{
+		  "type": "text",
+		  "id": "author",
+		  "label": "Author"
+		}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,104 @@
+{% if section.settings.enable_section %}
+  <div class="s-bottom-banner__outer">
+    <div class="container s-bottom-banner__inner">
+      {% if section.settings.title != blank %}
+        <h2 class="s-bottom-banner__title">
+          {{ section.settings.title }}
+        </h1>
+      {% endif %}
+
+      <div class="s-bottom-banner__bnts">
+        {% if section.settings.btn_url_1 != blank and section.settings.btn_text_1 != blank %}
+          <a href="{{ section.settings.btn_url_1 }}" class="Button">
+            {{ section.settings.btn_text_1 }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.btn_url_2 != blank and section.settings.btn_text_2 != blank %}
+          <a href="{{ section.settings.btn_url_2 }}" class="Button">
+            {{ section.settings.btn_text_2 }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .s-bottom-banner__outer {
+      {% if section.settings.bg_color != blank %}
+        background-color: {{ section.settings.bg_color }};
+      {% endif %}
+
+      {% if section.settings.bg_image_desk != blank %}
+        background-image: url("{{ section.settings.bg_image_desk | img_url: '2048x' }}");
+      {% endif %} 
+
+      {% if section.settings.bg_image_desk != blank  or section.settings.bg_image_mobile != blank %}
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      {% endif %}
+    } 
+
+    {% if section.settings.bg_image_mobile != blank %}
+      @media screen and (max-width: 768px) {
+        .s-bottom-banner__outer{
+          background-image: url("{{ section.settings.bg_image_mobile | img_url: '1024x' }}");
+        }
+      }
+    {% endif %}
+  </style>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Bottom banner",
+    "tag": "section",
+    "class": "s-bottom-banner",
+    "settings": [
+      {
+        "id": "enable_section",
+        "type": "checkbox",
+        "label": "Enable section",
+        "default": true
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title"
+      },
+      {
+        "id": "btn_text_1",
+        "type": "text",
+        "label": "Button text ",
+        "default": "Shop all"
+      },
+      {
+        "id": "btn_url_1",
+        "type": "url",
+        "label": "Button url 1"
+      },
+      {
+        "id": "btn_text_2",
+        "type": "text", 
+        "label": "Button text 2",
+        "default": "Get a recommendation"
+      },
+      {
+        "id": "btn_url_2",
+        "type": "url",
+        "label": "Button url 2"
+      },
+      {
+        "id": "bg_image_desk",
+        "type": "image_picker",
+        "label": "Background image (desktop)"
+      },
+      {
+        "id": "bg_image_mobile",
+        "type": "image_picker",
+        "label": "Background image (mobile)"
+      }
+    ]
+  }
+{% endschema %}

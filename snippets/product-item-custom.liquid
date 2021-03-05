@@ -1,0 +1,241 @@
+<div class="ProductItem {% if use_horizontal %}ProductItem--horizontal{% endif %}{% if show_lab_results and lab_results != blank %} lab-results-on{% endif %}">
+  <div class="ProductItem__Wrapper">
+    {%- comment -%}
+    We are using LazySizes to efficiently choose the most appropriate image in the set. However, because internally LazySizes uses srcset, we need to make
+    sure that the image sizes we offer is not larger than the max size uploaded by the merchants.
+    {%- endcomment -%}
+
+    {%- if settings.product_image_size == 'natural' or use_horizontal -%}
+      {%- assign use_natural_size = true -%}
+    {%- else -%}
+      {%- assign use_natural_size = false -%}
+    {%- endif -%}
+
+    {%- if settings.product_show_secondary_image and product.images[1] != blank and use_horizontal != true -%}
+      {%- assign has_alternate_image = true -%}
+    {%- else -%}
+      {%- assign has_alternate_image = false -%}
+    {%- endif -%}
+
+    <a href="javascript:void(0);" class="ProductItem__ImageWrapper {% if has_alternate_image %}ProductItem__ImageWrapper--withAlternateImage{% endif %}">
+      {%- if use_horizontal -%}
+        {%- assign max_width = 125 -%}
+      {%- else -%}
+        {%- assign max_width = block.settings.image.width -%}
+      {%- endif -%}
+
+      <div class="AspectRatio AspectRatio--{% if use_natural_size %}withFallback{% else %}{{ settings.product_image_size }}{% endif %}" style="max-width: {{ max_width }}px; {% if use_natural_size %}padding-bottom: {{ 100.0 | divided_by: block.settings.image.aspect_ratio }}%;{% endif %} --aspect-ratio: {{ block.settings.image.aspect_ratio }}">
+        {%- comment -%}
+        IMPLEMENTATION NOTE: The alternate image (not visible by default) should be the first in the DOM, as the spinner (Image__Loader element) is
+        displayed based on the immediately previously shown image.
+        {%- endcomment -%}
+
+        {%- include 'image-size', sizes: '600,800,1200', image: block.settings.image -%}
+        {%- assign image_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_600x.' -%}
+
+        <img class="ProductItem__Image Image--lazyLoad Image--fadeIn" data-src="{{ image_url }}" data-widths="[{{ supported_sizes }}]" data-sizes="auto" alt="{{ block.settings.image.alt | escape }}" data-image-id="{{ block.settings.image.id }}">
+        <span class="Image__Loader"></span>
+
+        <noscript>
+          <img class="ProductItem__Image" src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ block.settings.image.alt | escape }}">
+        </noscript>
+      </div>
+    </a>
+    
+    {%- if show_product_info -%}
+      <div class="ProductItem__Info {% unless use_horizontal %}ProductItem__Info--Left{% endunless %}">
+        <div class="ProductItem__Left">
+          {%- if show_vendor -%}
+            <p class="ProductItem__Vendor Heading">{{ product.vendor }}</p>
+          {%- endif -%}
+
+          <h2 class="ProductItem__Title Heading bh-product__title">
+            <a href="javascript:void(0);">{{ block.settings.title }}</a>
+          </h2>  
+        </div>
+        <div class="ProductItem__Right">
+          {%- if show_price_on_hover == nil -%}
+            {%- assign show_price_on_hover = settings.product_show_price_on_hover -%}
+          {%- endif -%}
+
+          {%- if show_price_on_hover and color_swatch_list != blank -%}
+            {{- color_swatch_list -}}
+          {%- endif -%}
+
+          {%- if product.template_suffix != 'coming-soon' and show_lab_results != true -%}
+            <div class="ProductItem__PriceList {% if show_price_on_hover %}ProductItem__PriceList--showOnHover{% endif %} Heading">
+              <span class="ProductItem__Price Price Price--compareAt Text--subdued" data-money-convertible>{{ block.settings.compare_at_price }}</span>
+              <span class="ProductItem__Price Price Price--highlight Text--subdued" data-money-convertible>{{ block.settings.price }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      {% unless show_lab_results %}
+        <div class="ProductItem_Below">
+            <p class="ProductItem__Serving">{{ block.settings.serving }}</p>
+            <p class="ProductItem__Subtitle">{{ block.settings.meta }}</p>
+        </div>
+      {% endunless %}
+    {%- endif -%}
+  </div>
+
+  <a href="javascript:void(0);" class="ProductItem__ViewButton Button Button--primary ProductItem_AddToCart" data-qty="1" data-id="{{ block.settings.id_20 }}">{{ section.settings.btn_20 }}</a>
+  <a href="javascript:void(0);" class="ProductItem__ViewButton Button Button--primary ProductItem_AddToCart" data-qty="2" data-id="{{ block.settings.id_30 }}">{{ section.settings.btn_30 }}</a>
+  {% comment %}
+  <div id='product-component-1587591246325-{{block.id}}'></div>
+  <script type="text/javascript">
+    /*<![CDATA[*/
+    (function () {
+      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      if (window.ShopifyBuy) {
+        if (window.ShopifyBuy.UI) {
+          ShopifyBuyInit();
+        } else {
+          loadScript();
+        }
+      } else {
+        loadScript();
+      }
+      function loadScript() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = scriptURL;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+        script.onload = ShopifyBuyInit;
+      }
+      function ShopifyBuyInit() {
+        var client = ShopifyBuy.buildClient({
+          domain: 'healist.myshopify.com',
+          storefrontAccessToken: 'f41bc16c946a32b0610a4d7abbd7b216',
+        });
+        ShopifyBuy.UI.onReady(client).then(function (ui) {
+          ui.createComponent('product', {
+            id: '{{ block.settings.id_no }}',
+            node: document.getElementById('product-component-1587591246325-{{block.id}}'),
+            moneyFormat: '%24%7B%7Bamount%7D%7D',
+            options: {
+              "product": {
+                "styles": {
+                  "product": {
+                    "@media (min-width: 601px)": {
+                      "max-width": "calc(25% - 20px)",
+                      "margin-left": "20px",
+                      "margin-bottom": "50px"
+                    }
+                  },
+                  "button": {
+                    "font-family": "PT Sans, sans-serif",
+                    ":hover": {
+                      "background-color": "#000000"
+                    },
+                    "background-color": "#000000",
+                    ":focus": {
+                      "background-color": "#000000"
+                    },
+                    "border-radius": "0px"
+                  }
+                },
+                "contents": {
+                  "img": false,
+                  "title": false,
+                  "price": false
+                },
+                "text": {
+                  "button": "Add to cart"
+                },
+                "googleFonts": [
+                  "PT Sans"
+                ]
+              },
+              "productSet": {
+                "styles": {
+                  "products": {
+                    "@media (min-width: 601px)": {
+                      "margin-left": "-20px"
+                    }
+                  }
+                }
+              },
+              "modalProduct": {
+                "contents": {
+                  "img": false,
+                  "imgWithCarousel": true,
+                  "button": false,
+                  "buttonWithQuantity": true
+                },
+                "styles": {
+                  "product": {
+                    "@media (min-width: 601px)": {
+                      "max-width": "100%",
+                      "margin-left": "0px",
+                      "margin-bottom": "0px"
+                    }
+                  },
+                  "button": {
+                    "font-family": "PT Sans, sans-serif",
+                    ":hover": {
+                      "background-color": "#000000"
+                    },
+                    "background-color": "#000000",
+                    ":focus": {
+                      "background-color": "#000000"
+                    },
+                    "border-radius": "0px"
+                  }
+                },
+                "googleFonts": [
+                  "PT Sans"
+                ],
+                "text": {
+                   "button": "{{ block.settings.btn_no }}"
+                }
+              },
+              "cart": {
+                "styles": {
+                  "button": {
+                    "font-family": "PT Sans, sans-serif",
+                    ":hover": {
+                      "background-color": "#000000"
+                    },
+                    "background-color": "#000000",
+                    ":focus": {
+                      "background-color": "#000000"
+                    },
+                    "border-radius": "0px"
+                  }
+                },
+                "text": {
+                  "total": "Subtotal",
+                  "notice": "Discount will be applied on checkout",
+                  "button": "Checkout"
+                },
+                "googleFonts": [
+                  "PT Sans"
+                ]
+              },
+              "toggle": {
+                "styles": {
+                  "toggle": {
+                    "font-family": "PT Sans, sans-serif",
+                    "background-color": "#000000",
+                    ":hover": {
+                      "background-color": "#000000"
+                    },
+                    ":focus": {
+                      "background-color": "#000000"
+                    }
+                  }
+                },
+                "googleFonts": [
+                  "PT Sans"
+                ]
+              }
+            },
+          });
+        });
+      }
+    })();
+    /*]]>*/
+  </script>
+  {% endcomment %}
+</div>

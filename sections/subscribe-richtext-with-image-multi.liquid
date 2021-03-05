@@ -1,0 +1,196 @@
+{% if section.settings.enable_section and section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+
+    {% assign content_position = '' %}
+    {% if block.settings.content_position == "right" %}
+      {% assign content_position = 'content-right' %}
+    {% endif %}
+
+    {% if block.settings.align_content == "right" %}
+      {% assign content_position = content_position | append: ' align-content-right' %}
+    {% endif %}
+
+    {% if block.settings.oi_position == "left-top" %}
+      {% assign overlay_image_position = 'left-top' %}
+    {% elsif block.settings.oi_position == "left-bottom" %}  
+      {% assign overlay_image_position = 'left-bottom' %}
+    {% elsif block.settings.oi_position == "right-top" %}
+      {% assign overlay_image_position = 'right-top' %}
+    {% elsif block.settings.oi_position == "right-bottom" %}  
+      {% assign overlay_image_position = 'right-bottom' %}
+    {% endif %}
+
+    <div class="s-richtext-with-imege-multi__outer {% if block.settings.image_full_width %}image-full-width{% endif %}" {% if block.settings.bg_color != blank %}style="background-color: {{ block.settings.bg_color }}"{% endif %}>
+      <div class="container">
+        {% if block.settings.heading != blank %}
+          <h2 class="s-richtext-with-imege-multi__heading">
+            <span>
+            {{ block.settings.heading }}
+            </span>
+          </h2>
+        {% endif %}
+
+        {% if block.settings.sub_heading != blank %}
+          <h2 class="s-richtext-with-imege-multi__sub-heading">
+            {{ block.settings.sub_heading }}
+          </h2>
+        {% endif %}
+
+        {% if block.settings.title != blank or block.settings.content != blank or block.settings.image != blank %}
+          <div class="s-richtext-with-imege-multi__inner {{ content_position }}">
+            <div class="s-richtext-with-imege-multi__content">
+              {% if block.settings.title != blank %}
+                <h3 class="s-richtext-with-imege-multi__title">
+                  {{ block.settings.title }}
+                </h3>
+              {% endif %}
+
+              {% if block.settings.content != blank %}
+                <div class="s-richtext-with-imege-multi__text">
+                  {{ block.settings.content }}
+                </div>
+              {% endif %}
+            </div>
+
+            {% if block.settings.image != blank %}
+              <div class="s-richtext-with-imege-multi__img-wrap">
+                <div class="s-richtext-with-imege-multi__img">
+                  {% assign image_size = block.settings.image_width %}
+                  {% assign image = block.settings.image %}
+
+                  <img class="Image--lazyLoad"
+                      data-src="{{ image | img_url: image_size }}" 
+                      data-srcset="{{ image | img_url: image_size }},
+                              {{ image | img_url: image_size, scale: 2 }} 2x,
+                              {{ image | img_url: image_size, scale: 3 }} 3x" 
+                      alt="{{  image.alt | escape }}">
+            
+                  {% if block.settings.overlay_image != blank %}
+                    <div class="s-richtext-with-imege-multi__overlay-image {{ overlay_image_position }}">
+                      {% assign image_size = "120x" %}
+                      {% assign image = block.settings.overlay_image %}
+
+                      <img class="Image--lazyLoad"
+                          data-src="{{ image | img_url: image_size }}" 
+                          data-srcset="{{ image | img_url: image_size }},
+                                {{ image | img_url: image_size, scale: 2 }} 2x,
+                                {{ image | img_url: image_size, scale: 3 }} 3x" 
+                          alt="{{  image.alt | escape }}">
+                    </div>    
+                  {% endif %}
+                </div>
+
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Richtext-w-image multi",
+    "tag": "section",
+    "class": "s-richtext-with-imege-multi",
+    "settings": [
+      {
+        "id": "enable_section",
+        "type": "checkbox",
+        "label": "Enable section",
+        "default": true
+      }
+    ],
+    "blocks": [ 
+      {
+        "type": "richtext_with_image",
+        "name": "Richtext with image",
+        "settings": [
+          {
+            "type": "radio",
+            "id": "content_position",
+            "options": [
+                { "value": "left", "label": "Left"},
+                { "value": "right", "label": "Right"}
+            ],
+            "label": "Content position"
+          },
+          {
+            "id": "heading",
+            "type": "text",
+            "label": "Heading"
+          },
+          {
+            "id": "sub_heading",
+            "type": "text",
+            "label": "Sub heading"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "content",
+            "type": "richtext",
+            "label": "Content"
+          },
+          {
+            "type": "radio",
+            "id": "align_content",
+            "options": [
+                { "value": "left", "label": "Left"},
+                { "value": "right", "label": "Right"}
+            ],
+            "label": "Align content"
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "image_width",
+            "label": "Image width",
+            "options": [
+              { "value": "360x", "label": "360px" },
+              { "value": "384x", "label": "384px" },
+              { "value": "440x", "label": "440px" },
+              { "value": "552x", "label": "552px" }
+            ],
+            "default": "440x"
+          },
+          {
+            "id": "image_full_width",
+            "type": "checkbox",
+            "label": "Image full width on mobile",
+            "default": false
+          },
+          {
+            "id": "overlay_image",
+            "type": "image_picker",
+            "label": "Overlay Image"
+          },
+          {
+            "type": "radio",
+            "id": "oi_position",
+            "options": [
+                { "value": "left-top", "label": "Left - top"},
+                { "value": "left-bottom", "label": "Left - bottom"},
+                { "value": "right-top", "label": "Right - top"},
+                { "value": "right-bottom", "label": "Right - bottom"}
+            ],
+            "label": "Overlay image position"
+          },
+          {
+            "id": "bg_color",
+            "type": "color",
+            "label": "Background color"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

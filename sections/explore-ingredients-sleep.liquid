@@ -1,0 +1,11 @@
+<div class='explore-ingredients__sleep-wrapper'>
+  <div class='sleep-wrapper__img-container'>
+    <img class='sleep-wrapper__primary-img' src="{{ section.settings.primary-img | img_url: '1000x' }}" alt="{{ section.settings.primary-img.alt | escape }}"/>
+    <img class='sleep-wrapper__secondary-img' src="{{ section.settings.secondary-img| img_url: '100x' }}" alt="{{ section.settings.secondary-img.alt | escape }}"/>
+  </div>
+  <div class='sleep-wrapper__text-container'>
+    <h3 class='sleep-wrapper__title'>{{ section.settings.sleep_wrapper_title | escape }}</h3>
+    <p class='sleep-wrapper__content'>{{ section.settings.sleep_wrapper_content| escape }}</p>
+    <a href="{{ section.settings.sleep-wrapper-url }}" class="sleep-wrapper__button">{{ section.settings.sleep_wrapper_link_text | escape }}</a>
+  </div>
+</div>

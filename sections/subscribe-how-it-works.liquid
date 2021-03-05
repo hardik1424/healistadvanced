@@ -1,0 +1,193 @@
+<section class="Section">
+
+<div class="how-it-works-wrapper">
+  <div class="how-it-works__header">
+    <h2 class="how-it-works-heading">{{section.settings.heading_1}}</h2>
+    <p class="how-it-works-blurb">{{section.settings.header_paragraph}}<p>
+  </div>
+  <div class="check-wrapper">
+    <article class="check-wrapper__item">
+      <span class="step-headline">{{section.settings.headline_1}}</span>
+      <img class="page-subscribe__green-checkmark" src="{{ section.settings.image_1 | img_url: 'x600' }}" alt="{{ section.settings.image_1.alt | escape }}">
+      <h2 class="checkmark-heading">{{section.settings.subheading_1}}</h2>
+      <p class="checkmark-paragraph">{{section.settings.p1}}</p>
+    </article>
+    <article class="check-wrapper__item">
+      <span class="step-headline">{{section.settings.headline_2}}</span>
+      <img class="page-subscribe__green-checkmark" src="{{ section.settings.image_2 | img_url: 'x600' }}" alt="{{ section.settings.image_2.alt | escape }}">
+      <h2 class="checkmark-heading">{{section.settings.subheading_2}}</h2>
+      <p class="checkmark-paragraph">{{section.settings.p2}}</p>
+    </article>
+    <article class="check-wrapper__item">
+      <span class="step-headline">{{section.settings.headline_3}}</span>
+      <img class="page-subscribe__green-checkmark" src="{{ section.settings.image_3 | img_url: 'x600' }}" alt="{{ section.settings.image_3.alt | escape }}">
+      <h2 class="checkmark-heading">{{section.settings.subheading_3}}</h2>
+      <p class="checkmark-paragraph">{{section.settings.p3}}</p>
+    </article>
+  </div>
+  {% comment %}<div class="outer-frequency-wrapper">
+    <h2 class="frequency-title">{{section.settings.frequency_title}}</h2>
+    <div class="frequency-wrapper">
+      <article class="frequency-wrapper__item">
+        <img class="page-subscribe__num-img page-subscribe__num-img--30" src="{{ section.settings.thirty-img | img_url: 'x600' }}" alt="{{ section.settings.thirty-img.alt | escape }}">
+        <h2 class="black-heading">{{section.settings.frequency_heading_1}}</h2>
+        <p class="how-it-works-paragraph">{{section.settings.frequency_paragraph_1}}</p>
+      </article>
+      <article class="frequency-wrapper__item">
+        <img class="page-subscribe__num-img page-subscribe__num-img--60" src="{{ section.settings.sixty-img | img_url: 'x600' }}" alt="{{ section.settings.sixty-img.alt | escape }}">
+        <h2 class="black-heading">{{section.settings.frequency_heading_2}}</h2>
+        <p class="how-it-works-paragraph">{{section.settings.frequency_paragraph_2}}</p>
+      </article>
+      <article class="frequency-wrapper__item">
+        <img class="page-subscribe__num-img page-subscribe__num-img--90" src="{{ section.settings.ninety-img | img_url: 'x600' }}" alt="{{ section.settings.ninety-img | escape }}">
+        <h2 class="black-heading">{{section.settings.frequency_heading_3}}</h2>
+        <p class="how-it-works-paragraph">{{section.settings.frequency_paragraph_3}}</p>
+      </article>
+    </div>
+  </div>{% endcomment %}
+</div>
+</section>
+
+{% schema %}
+{
+  "name": "How It Works",
+  "class": "How_it_works_section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_1",
+      "label": "Headline"
+    },
+      {
+      "type": "text",
+      "id": "header_paragraph",
+      "label": "Description"
+    },
+      {
+      "type": "text",
+      "id": "headline_1",
+      "label": "Column 1 tag"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Icon 1",
+      "info": "400 x 400px .png recommended"
+    },
+    {
+      "type": "text",
+      "id": "subheading_1",
+      "label": "Column 1 headline"
+    },
+    {
+      "type": "text",
+      "id": "p1",
+      "label": "Column 1 paragraph"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Icon 2",
+      "info": "400 x 400px .png recommended"
+    },
+      {
+      "type": "text",
+      "id": "headline_2",
+      "label": "Column 2 tag"
+    },
+    {
+      "type": "text",
+      "id": "subheading_2",
+      "label": "Column 2 headline"
+    },
+    {
+      "type": "text",
+      "id": "p2",
+      "label": "Column 2 paragraph"
+    },
+     {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Icon 3",
+      "info": "400 x 400px .png recommended"
+    },
+      {
+      "type": "text",
+      "id": "headline_3",
+      "label": "Column 3 tag"
+    },
+      {
+      "type": "text",
+      "id": "subheading_3",
+      "label": "Column 3 headline"
+    },
+      {
+      "type": "text",
+      "id": "p3",
+      "label": "Column 3 paragraph"
+    },
+      {
+      "type": "text",
+      "id": "frequency_title",
+      "label": "frequency_title"
+    },
+      {
+      "type": "text",
+      "id": "frequency_heading_1",
+      "label": "frequency column 1 headline"
+    },
+     {
+      "type": "text",
+      "id": "frequency_paragraph_1",
+      "label": "frequency column 1 paragraph"
+    },
+    {
+      "type": "image_picker",
+      "id": "thirty-img",
+      "label": "30 - Img"
+    },
+      {
+      "type": "text",
+      "id": "frequency_heading_2",
+      "label": "frequency column 2 headline"
+    },
+    {
+      "type": "text",
+      "id": "frequency_paragraph_2",
+      "label": "frequency column 2 paragraph"
+    },
+    {
+      "type": "image_picker",
+      "id": "sixty-img",
+      "label": "60 - Img"
+    },
+      {
+      "type": "text",
+      "id": "frequency_heading_3",
+      "label": "frequency column 3 headline"
+    },
+      {
+      "type": "text",
+      "id": "frequency_paragraph_3",
+      "label": "frequency column 3 paragraph"
+    },
+    {
+      "type": "image_picker",
+      "id": "ninety-img",
+      "label": "90 - Img"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Rich text with image",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

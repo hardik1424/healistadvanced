@@ -1,0 +1,87 @@
+<section class="Section">
+
+  <div class="page-subscribe__header-wrapper">
+
+  <div class="header-container">
+  {%- if section.settings.subheading != blank -%}
+    <h3 class="page-subscribe__heading">{{ section.settings.subheading | escape }}</h3>
+  {%- endif -%}
+
+  <img class="page-subscribe__header-img" src="{{ section.settings.header_image_1 | img_url: 'x600' }}" alt="{{ section.settings.header_image_1.alt | escape }}">
+
+  <div class="page-subscribe__checklist">
+      <div class="checkmark-row"><img class="page-subscribe__banner-checkmark" src="{{ section.settings.banner_checkmark | img_url: 'x200' }}"/> <p class="page-subscribe__checklist-item">{{ section.settings.subheading_1 | escape }}</p></div>
+      <div class="checkmark-row"><img class="page-subscribe__banner-checkmark" src="{{ section.settings.banner_checkmark | img_url: 'x200' }}"/> <p class="page-subscribe__checklist-item">{{ section.settings.subheading_2 | escape }}</p></div>
+      <div class="checkmark-row"><img class="page-subscribe__banner-checkmark" src="{{ section.settings.banner_checkmark | img_url: 'x200' }}"/> <p class="page-subscribe__checklist-item">{{ section.settings.subheading_3 | escape }}</p></div>
+      <div class="checkmark-row"><img class="page-subscribe__banner-checkmark" src="{{ section.settings.banner_checkmark | img_url: 'x200' }}"/> <p class="page-subscribe__checklist-item">{{ section.settings.subheading_4 | escape }}</p></div>
+  </div>
+</div>
+
+  </div>
+
+ 
+</section>
+
+<style>
+  .page-subscribe__header-wrapper{
+    background-image: url("{{ section.settings.background_image | img_url: 'x1000' }}");
+
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Subscribe-Banner",
+  "class": "Subscribe_banner_Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "heading_1"
+    },
+    {
+      "type": "text",
+      "id": "subheading_1",
+      "label": "Subheading 1"          
+    },
+      {
+      "type": "text",
+      "id": "subheading_2",
+      "label": "Subheading 2"
+    },
+    {
+      "type": "text",
+      "id": "subheading_3",
+      "label": "Subheading 3"         
+    },
+    {
+      "type": "text",
+      "id": "subheading_4",
+      "label": "Subheading 4"         
+    },
+    {
+      "type": "image_picker",
+      "id": "header_image_1",
+      "label": "header_image_1"
+    },
+     {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "background_image"
+    },
+     {
+      "type": "image_picker",
+      "id": "banner_checkmark",
+      "label": "Checkmark"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Rich text with image",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

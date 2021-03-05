@@ -1,0 +1,42 @@
+<div class="recommendation-page__container">
+
+<div class="recommendation-page__wrapper">
+
+<h4 class="recommendation-page__header-subtitle">{{section.settings.recommendation_page_subtitle}}</h4>
+<h2 class="recommendation-page__header-title">{{section.settings.recommendation_page_title}}</h2>
+
+<div class="recommendation-page__recommender-app">
+  <div id="zoovu-assistant"></div>
+</div>
+
+</div>
+</div>
+
+
+  <script type="text/javascript" src="https://api-tiger.zoovu.com/api/v1/advisors/KdV1GVpK/js-loader?locale=en-US"></script>
+
+
+
+{% schema %}
+{
+  "name": "Recommendation Header",
+  "class": "shopify-section--recommendation-header",
+    "settings": [
+    {
+      "type": "image_picker",
+      "id": "recommendation_header_image",
+      "label": "Header Image"
+    },
+    {
+      "type": "text",
+      "id": "recommendation_page_title",
+      "label": "Page Title"
+    },
+     {
+      "type": "text",
+      "id": "recommendation_page_subtitle",
+      "label": "Page Subtitle"
+    }
+  ]
+}
+{% endschema %}

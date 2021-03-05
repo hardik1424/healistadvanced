@@ -1,0 +1,25 @@
+<script>
+  jQuery(document).ready(function($){
+    $.getJSON("https://api.ipify.org/?format=json", function(e) {
+      var ip = e.ip;
+      $.getJSON('https://api.ipstack.com/' + ip + '?access_key=5e97a788d80e626dc1942b9734918115', function(e) {
+        var region_name = e.region_name;
+        console.log(region_name);
+        if (region_name.indexOf('Idaho') >= 0) {
+          $('.atc-wrapper').addClass('disabled');
+          $('.atc-wrapper .atc-tip').text('Not Permitted');
+          $('.atc-wrapper button span').text('Not Permitted');
+          $('.atc-wrapper button').attr('disabled', true);
+        }
+        else if (region_name.indexOf('Georgia') >= 0 || region_name.indexOf('Washington') >= 0) {
+          {% if product.tags contains 'Categories_Chews/Gummies' %}
+          	$('.atc-wrapper').addClass('disabled');
+            $('.atc-wrapper .atc-tip').text('No Ingestibles');
+          	$('.atc-wrapper button span').text('No Ingestibles');
+            $('.atc-wrapper button').attr('disabled', true);
+          {% endif %}
+        }
+      });
+    });    
+  });  
+</script>

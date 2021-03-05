@@ -1,0 +1,184 @@
+{%- if section.settings.show_layout_switch -%}
+  {%- assign desktop_items_per_row = cart.attributes.collection_desktop_items_per_row | default: section.settings.grid_desktop_items_per_row | times: 1 -%}
+  {%- assign mobile_items_per_row  = cart.attributes.collection_mobile_items_per_row | default: section.settings.grid_mobile_items_per_row | times: 1 -%}
+
+  {%- if desktop_items_per_row >= 3 and desktop_items_per_row != section.settings.grid_desktop_items_per_row -%}
+    {%- assign desktop_items_per_row = 2 -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign desktop_items_per_row = 2 -%}
+  {%- assign mobile_items_per_row  = 1 -%}
+{%- endif -%}
+
+{%- if desktop_items_per_row == 4 -%}
+  {%- assign tablet_items_per_row = 3 -%}
+{%- else -%}
+  {%- assign tablet_items_per_row = 2 -%}
+{%- endif -%}
+
+<div class="labs-page__container">
+
+<div id="laptop-filter-container" class="labs-page__filter-container">
+  {% comment %}<button id="labs-page__reset-btn"><p class="">All</p></button>{% endcomment %}
+  {% for tag in collections.all.all_tags %}
+  {%- assign tag_parts = tag | split: '_' -%}
+  {% if tag_parts.first == 'Benefits' %}
+      <button class="labs-page__filter-button">
+        <a href="#{{ tag | url_encode }}" data-tag="{{ tag }}" class="filter-tag-btn">{{ tag_parts.last }}</a>
+      </button>
+  {%endif%}
+  {% endfor %}
+</div>
+
+<div id="labs-mobile-filter" class="labs-page__mobile-container">
+  <select class="labs-page__filter-button-mobile">
+        <option class="select-item" value="all">Filter</option> 
+        {% comment %}<option id="labs-page__reset-btn" class="filter-tag-btn" value="all">All</option>{% endcomment %}
+  {% for tag in collections.all.all_tags %}
+  {%- assign tag_parts = tag | split: '_' -%}
+  {% if tag_parts.first == 'Benefits' %}
+        <option class="{{ tag | url_encode }} filter-tag-btn" data-tag="{{ tag }}" value="{{ tag }}">{{ tag_parts.last }}</option>
+  {%endif%}
+  {% endfor %}
+  </select>
+</div>
+
+<div class="labs-page__content">
+<h2 class="labs-page__header-title">{{section.settings.labs_page_title}}</h2>
+
+<h4 class="labs-page__header-subtitle">{{section.settings.labs_page_subtitle}}</h4>
+ <div id="grid-container" class="labs-page__grid">
+
+ {% assign sortedcollection = collections.all.products %}
+
+ {% comment %} This show all variants of each product. If there are more that one variant we will use the link from the variant lab results metafield else we will use the individual product lab results metafield {% endcomment %}
+
+    <div class="ProductListWrapper">
+      <div class="ProductList ProductList--grid {% if paginate.pages > 1 %}ProductList--removeMargin{% endif %} Grid" data-mobile-count="{{ mobile_items_per_row }}" data-desktop-count="{{ desktop_items_per_row }}">
+       {%- for product in sortedcollection -%}
+        <div class="Grid__Cell 1/{{ mobile_items_per_row }}--phone 1/{{ tablet_items_per_row }}--tablet-and-up 1/{{ desktop_items_per_row }}--{% if section.settings.filter_position == 'drawer' %}lap-and-up{% else %}desk{% endif %} labs-page__product-container{% for tag in product.tags %} tag-{{ tag }} {% endfor %}">
+          {%- include 'product-item', show_product_info: true, show_vendor: section.settings.show_vendor, show_color_swatch: section.settings.show_color_swatch, show_labels: true, show_lab_results: true -%}
+        </div>
+        {% comment %}{% for variant in product.variants %}
+          <div class="labs-page__product-container {% for tag in product.tags %} tag-{{ tag }} {% endfor %}">
+            <div class="labs-page__product-img-wrapper">
+              <img class="labs-page__product-img" src="{{ product.featured_image | product_img_url: 'large' }}" alt='{{ product.title | escape }}'>
+            </div>
+            <div class="labs-page__product-info">
+              <p class="labs-page__product-title">{{product.title}}{% if variant.title != 'Default Title' %} - {{variant.title}}{%endif%}</p>
+
+              {% if variant.title == 'Default Title' %}
+                {% assign lab_results = product.metafields.sf_lab.lab_result_url %}
+                <a href="{{ lab_results }}" title="View Lab Results" class="labs-page__lab-btn" target="_blank">View Lab Results</a>
+              {% else %}
+                {% assign variant_lab_results = variant.metafields.sf_test.results %}
+                <a href={{ variant_lab_results }} title="View Lab Results" class="labs-page__lab-btn" target="_blank">View Lab Results</a>
+              {% endif %}
+
+              <a href="{{product.url}}" title="Purchase" class="labs-page__product-btn" target="_blank">Purchase</a>
+            </div>
+          </div>
+        {% endfor %}{% endcomment %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+
+$(function() {
+    let isMobile = window.matchMedia("only screen and (max-width: 400px)").matches;
+      if (isMobile) {
+        //console.log("mobile")
+        $("select.labs-page__filter-button-mobile").change(function() {
+            let tag = $(this).children("option:selected").val();
+          if(tag != "all"){
+            $("#grid-container").removeClass("labs-page__grid");
+            $("#grid-container").addClass("labs-page__default");
+            $(".labs-page__product-container").hide();
+            $(".tag-" + tag).show()
+                $(this).css({"fontWeight": "bold"})
+            $( ".filter-tag-btn" ).css({"fontWeight": "normal"});
+          }
+        if(tag == "all"){
+          $("#grid-container").addClass("labs-page__grid");
+          $("#grid-container").removeClass("labs-page__default");
+          $(".labs-page__product-container").show();
+          $(this).css({"fontWeight": "bold"})
+          $( ".filter-tag-btn" ).css({"fontWeight": "normal"});
+        }
+      });
+    }
+});
+
+$(function() {
+    let isMobile = window.matchMedia("only screen and (max-width: 400px)").matches;
+    if(!isMobile){
+      $( ".filter-tag-btn" ).click(function() {
+        var tag = $(this).attr("href").substring(1);
+        $(".labs-page__product-container").hide();
+        $("#grid-container").removeClass("labs-page__grid");
+        $("#grid-container").addClass("labs-page__default");
+          if(tag){
+            $(".labs-page__product-container").hide();
+            $(".tag-" + tag).show();
+            $( ".filter-tag-btn" ).css({"fontWeight": "normal"});
+            $("#labs-page__reset-btn").css({"fontWeight": "normal"});
+            $(this).css({"fontWeight": "bold"})
+          }
+      });
+
+    }
+});
+
+$(function() {
+  $('.labs-page__filter-button-mobile option').each(function(){
+    var t = $(this);
+    if (t.attr('data-tag') == 'Benefits_Relief'){
+      t.insertAfter(t.next('option'));
+    }
+  }); 
+
+  $('.labs-page__filter-container .labs-page__filter-button').each(function(){
+    var t = $(this);
+    if (t.find('> a').attr('data-tag') == 'Benefits_Relief'){
+      t.insertAfter(t.next('.labs-page__filter-button'));
+    }
+  });
+
+  $( "#labs-page__reset-btn" ).click(function() {
+    $("#grid-container").addClass("labs-page__grid");
+    $("#grid-container").removeClass("labs-page__default");
+    $(".labs-page__product-container").show();
+    $( ".filter-tag-btn" ).css({"fontWeight": "normal"});
+    $(this).css({"fontWeight": "bold"})
+  });
+});
+
+</script>
+
+{% schema %}
+{
+  "name": "Labs Header",
+  "class": "shopify-section--labs-header",
+    "settings": [
+    {
+      "type": "image_picker",
+      "id": "labs_header_image",
+      "label": "Header Image"
+    },
+    {
+      "type": "text",
+      "id": "labs_page_title",
+      "label": "Page Title"
+    },
+     {
+      "type": "text",
+      "id": "labs_page_subtitle",
+      "label": "Page Subtitle"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,136 @@
+<section class="yellow-background Section {% unless section.settings.image %}Section--spacingNormal{% endunless %}">
+
+<div class="bh-image-with-text">
+  {%- capture section_content -%}
+    <div class="FeatureText__ContentWrapper bh-image-with-text__wrapper-div"> 
+      <div class="FeatureText__Content">
+        {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+          <header class="SectionHeader">
+            <div class="bh-image-with-text__text-container">
+            {%- if section.settings.subheading != blank -%}
+              <h3 class="bh-image-with-text__subheading SectionHeader__SubHeading Heading u-h6">{{ section.settings.subheading | escape }}</h3>
+            {%- endif -%}
+
+            {%- if section.settings.title != blank -%}
+              <h2 class="bh-image-with-text__heading SectionHeader__Heading Heading u-h1">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.content != blank -%}
+              <div class="bh-image-with-text__paragraph SectionHeader__Description Rte">
+                {{ section.settings.content }}
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.link_text != blank -%}
+             {% if section.settings.button-image != blank %}
+              <img class="bh-image-with-text__img" src="{{ section.settings.button-image | img_url: '1000x' }}" alt="{{ button-image.alt | escape }}"> 
+             {% endif %}
+              <a class="Button Button--primary bh-image-with-text__button" href="{{ section.settings.link_url }}" class="bh__button">{{ section.settings.link_text | escape }}</a>
+            {%- endif -%}
+            </div>
+          </header>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endcapture -%}
+
+  {%- capture section_image -%}
+    {%- if section.settings.image != blank -%}
+      <div class="bh-image-with-text__main-img-wrapper">
+        {% if section.settings.overlay_image != blank %}
+          <img class="bh-image-with-text__overlay-img" src="{{ section.settings.overlay_image | img_url: '200x' }}" />
+        {% endif %}
+        <img class="bh-image-with-text__main-img" src="{{ section.settings.image | img_url: '600x' }}" alt="{{ section.settings.image.alt | escape }}">
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  <div class=" bh-image-with-text__section-wrapper FeatureText {% if section.settings.image != blank %}FeatureText--withImage FeatureText--image{{ section.settings.image_position | capitalize }}{% endif %}">
+    {%- if section.settings.image_position == 'left' -%}
+      {{- section_content -}}
+      {{- section_image -}}
+    {%- else -%}
+      {{- section_content -}}
+      {{- section_image -}}
+    {%- endif -%}
+  </div>
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "BH - Rich text image",
+  "class": "shopify-section--bordered",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub-heading",
+      "default": "BH Heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "BH Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1200 x 1200px .png recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image",
+      "label": "Overlay Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>Add your own custom content to give more information about your store, availability details...</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text"
+    },{
+      "type": "image_picker",
+      "id": "button-image",
+      "label": "button_image",
+      "info": "Image for button"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Rich text with image",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

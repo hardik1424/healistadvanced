@@ -1,0 +1,135 @@
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.page == page.handle %}
+      <div class="s-related-content__outer" {% if block.settings.bg_color != blank %}style="background-color: {{ block.settings.bg_color }}"{% endif %}>
+        <div class="container">
+          <h2 class="s-related-content__heading">
+            {{ block.settings.heading }}
+          </h2>
+
+          <div class="swiper-container">
+            <div class="s-related-content__inner swiper-wrapper">
+              {% if block.settings.article_3 != blank %}
+                <div class="s-related-content__article swiper-slide">
+                  {% assign article = articles[block.settings.article_1] %}
+                  {% assign image_size = "360x" %}
+                  {% assign image = article.image %}
+
+                  <a class="s-related-content__link" href="https://healist.myshopify.com{{ article.url | replace: 'hemp', 'cbd' }}">
+                    <img class="Image--lazyLoad"
+                        data-src="{{ image | img_url: image_size }}" 
+                        data-srcset="{{ image | img_url: image_size }},
+                                {{ image | img_url: image_size, scale: 2 }} 2x,
+                                {{ image | img_url: image_size, scale: 3 }} 3x" 
+                        alt="{{  image.alt | escape }}">
+                  </a> 
+
+                  <h3>
+                   <a href="https://healist.myshopify.com{{ article.url | replace: 'hemp', 'cbd' }}">{{ article.title }}</a> 
+                  </h3>    
+                </div>
+              {% endif %} 
+
+              {% if block.settings.article_3 != blank %}
+                <div class="s-related-content__article swiper-slide">
+                  {% assign article = articles[block.settings.article_2] %}
+                  {% assign image_size = "360x" %}
+                  {% assign image = article.image %}
+
+                <a class="s-related-content__link" href="https://healist.myshopify.com{{ article.url | replace: 'hemp', 'cbd' }}">
+                  <img class="Image--lazyLoad"
+                      data-src="{{ image | img_url: image_size }}" 
+                      data-srcset="{{ image | img_url: image_size }},
+                              {{ image | img_url: image_size, scale: 2 }} 2x,
+                              {{ image | img_url: image_size, scale: 3 }} 3x" 
+                      alt="{{  image.alt | escape }}">
+                </a>
+                <a href="https://healist.myshopify.com{{ article.url | replace: 'hemp', 'cbd' }}">
+                  <h3>{{ article.title }}</h3>
+                </a>
+                </div>
+              {% endif %}
+
+              {% if block.settings.article_3 != blank %}
+                <div class="s-related-content__article swiper-slide">
+                  {% assign article = articles[block.settings.article_3] %}
+                  {% assign image_size = "360x" %}
+                  {% assign image = article.image %}
+
+                <a class="s-related-content__link" href="https://healist.myshopify.com{{ article.url | replace: 'hemp', 'cbd' }}">
+                  <img class="Image--lazyLoad"
+                      data-src="{{ image | img_url: image_size }}" 
+                      data-srcset="{{ image | img_url: image_size }},
+                              {{ image | img_url: image_size, scale: 2 }} 2x,
+                              {{ image | img_url: image_size, scale: 3 }} 3x" 
+                      alt="{{  image.alt | escape }}">
+                  </a>
+
+                  <a href="https://healist.myshopify.com{{ article.url | replace: 'hemp', 'cbd' }}">
+                    <h3>{{ article.title }}</h3>
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Related content",
+    "tag": "section",
+    "class": "s-related-content",
+    "blocks": [ 
+      {
+        "type": "page",
+        "name": "Page",
+        "settings": [
+           {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "id": "bg_color",
+            "type": "color",
+            "label": "Background color",
+            "default": "#f0f0f0"
+          },
+          {
+            "id": "heading",
+            "type": "text",
+            "label": "Heading",
+            "default": "Related Content"
+          },
+          {
+            "id": "article_1",
+            "type": "article",
+            "label": "Article 1"
+          },
+          {
+            "id": "article_2",
+            "type": "article",
+            "label": "Article 2"
+          },
+          {
+            "id": "article_3",
+            "type": "article",
+            "label": "Article 3"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

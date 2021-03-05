@@ -1,0 +1,157 @@
+{%- capture flickity_options -%}
+{
+  "prevNextButtons": false,
+  "wrapAround": true,
+  "dragThreshold": 16,
+  "pageDots": {% if section.blocks.size > 1 %}true{% else %}true{% endif %},
+  "autoPlay": {% if section.settings.autoplay %}{{ section.settings.cycle_speed | times: 1000 }}{% else %}false{% endif %}
+}
+{%- endcapture -%}
+
+{%- assign should_show_nav = false -%}
+
+{%- for block in section.blocks -%}
+  {%- if block.settings.logo -%}
+    {%- assign should_show_nav = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<section class="bh-testimonial__section Section Section--spacingNormal" id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="testimonials">
+  <div class="TestimonialList {% if should_show_nav %}TestimonialList--withNav{% endif %} Carousel Carousel--fadeIn" data-flickity-config='{{ flickity_options }}'>
+    {%- for block in section.blocks -%}
+      <div id="block-{{ block.id }}" class="Carousel__Cell Testimonial {% if forloop.first %}is-selected{% endif %}" {{ block.shopify_attributes }} data-slide-index="{{ forloop.index0 }}">
+        <div class=" bh-testimonial__container Container">
+          {%- if block.settings.quote != blank -%}
+          
+          <img class="bh-testimonial__side-img" src="{{ block.settings.side_image | img_url: '600x' }}" alt="{{ block.settings.side_image.alt | escape }}"/>
+
+           <div class="bh-testimonial__img-container">
+            {%- if block.settings.slide_image != blank -%}
+              <img class="bh-testimonial__main-img" src="{{ block.settings.slide_image | img_url: '800x' }}" alt="{{ block.settings.slide_image.alt | escape }}"/>
+            {%- endif -%}
+           </div>
+
+            <div class="bh-testimonial__content-container Testimonial__Content">
+              {{ block.settings.quote }}
+
+            {%- if block.settings.link_text != blank -%}
+              <a href="{{ block.settings.link_url }}" class="Button Button--primary bh-testimonial__button">{{ block.settings.link_text | escape }}</a>
+            {%- endif -%}
+
+            </div>
+
+          {%- endif -%}
+
+        
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+</section>
+
+<style>
+  #section-{{ section.id }} {
+    color: {{ section.settings.text_color }};
+    background: {{ section.settings.background }};
+  }
+
+  #section-{{ section.id }} .flickity-page-dots .dot:not(.is-selected) {
+    border-color: {{section.settings.background | color_mix: section.settings.text_color, 85}};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "shopify-section--bordered",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto rotate between testimonials",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cycle_speed",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "unit": "sec",
+      "label": "Change testimonials every",
+      "default": 5
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#eaeaea"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#1c1b1b"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "slide_image"
+        },
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>Share what your customers are saying about your products, your company...</p>",
+          "info": "For best results, keep the word count consistent in each quote."
+        },
+        {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image",
+      "label": "Side Image Logo"
+    }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Testimonials",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {}
+        },
+        {
+          "type": "testimonial",
+          "settings": {}
+        },
+        {
+          "type": "testimonial",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

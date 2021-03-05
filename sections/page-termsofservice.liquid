@@ -1,0 +1,108 @@
+<section class="Section {% unless section.settings.image %}Section--spacingNormal{% endunless %}">
+
+    <div class="FeatureText__ContentWrapper">
+
+      <div class="page-terms__content-container">
+        <h2 class="page-terms__heading">{{ section.settings.title | escape }}</h2>
+
+        <p class="page-terms__paragraph">{{ section.settings.content_1| escape }}</p>
+
+        <h3 class="page-terms__subheading">{{ section.settings.subheading_1 | escape }}</h3>
+
+        <p class="page-terms__paragraph">{{ section.settings.content_2 | escape }}</p>    
+
+        <h3 class="page-terms__subheading">{{ section.settings.subheading_2 | escape }}</h3>
+
+        <p class="page-terms__phone">{{ section.settings.phone| escape }}</p>
+        <p class="page-terms__email">{{ section.settings.email | escape }}</p>
+
+        {{ section.settings.terms_of_use}}
+        {{ section.settings.terms_of_sale}}
+        {{ section.settings.shipping_policy}}
+        {{ section.settings.copyright_policy}}
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Terms of Service",
+  "class": "shopify-section--bordered",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading_1",
+      "label": "Sub-heading_1",
+      "default": "Sub-heading One"
+    },
+    {
+      "type": "text",
+      "id": "subheading_2",
+      "label": "Sub-heading_2",
+      "default": "Sub-heading Two"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Title"
+    },
+    {
+      "type": "text",
+      "id": "content_1",
+      "label": "Paragraph One"
+    },
+    {
+      "type": "text",
+      "id": "content_2",
+      "label": "Paragraph Two"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "html",
+      "id": "terms_of_use",
+      "label": "Terms of use HTML"
+    },
+    {
+      "type": "html",
+      "id": "terms_of_sale",
+      "label": "Terms of sale HTML"
+    },
+    {
+      "type": "html",
+      "id": "shipping_policy",
+      "label": "Shipping policy HTML"
+    },
+    {
+      "type": "html",
+      "id": "copyright_policy",
+      "label": "Copyright policy HTML"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Terms of Service",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

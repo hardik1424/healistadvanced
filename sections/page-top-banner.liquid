@@ -1,0 +1,251 @@
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.page == page.handle %}
+      {% if block.settings.content_position == "right" %}
+        {% assign content_position = 'content-right' %}
+      {% elsif block.settings.content_position == "center" and  block.settings.image_picker == blank %}
+        {% assign content_position = 'content-center' %}
+      {% endif %}
+      
+      <div class="s-top-banner__outer">
+        <div class="container s-top-banner__inner {{ content_position }}">
+          <div class="s-top-banner__content">
+            {% if block.settings.title != blank %}
+              <h1 class="s-top-banner__title">
+                {{ block.settings.title }}
+              </h1>
+            {% endif %}
+
+            {% if block.settings.image_btitle != blank %}
+              {% assign image_size = "552x" %}
+              {% assign image = block.settings.image_btitle %}
+              <div class="s-top-banner_img-btitle">
+                <img class="Image--lazyLoad" 
+                    data-src="{{ image | img_url: image_size }}" 
+                    data-srcset="{{ image | img_url: image_size }},
+                            {{ image | img_url: image_size, scale: 2 }} 2x,
+                            {{ image | img_url: image_size, scale: 3 }} 3x" 
+                    alt="{{ image.alt | escape }}">
+              </div>
+            {% endif %}
+
+            <ul class="s-top-banner__list">
+              {%- for block in section.blocks -%}
+                {% if block.settings.banner_page == page.handle %}
+                  {%- if block.type == 'top_banner_list' -%}
+                    <li class="s-top-banner__list-item">{{ block.settings.banner_item }}</li>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+
+            {% if block.settings.sub_title != blank %}
+              <div class="s-top-banner__sub-title">
+                {{ block.settings.sub_title }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.btn_url != blank and block.settings.btn_text != blank %}
+              <a href="{{ block.settings.btn_url }}" class="Button Button--primary s-top-banner__btn">
+                {{ block.settings.btn_text }}
+              </a>
+            {% endif %}
+          </div>
+          
+          {% if block.settings.image != blank or block.settings.image_mobile != blank %}
+            <div class="s-top-banner__img-wrap">
+              <div class="s-top-banner__img">
+                <div class="desktop">
+                  {% assign image_size = "552x" %}
+                  {% assign image = block.settings.image %}
+
+                  <img class="Image--lazyLoad" 
+                      data-src="{{ image | img_url: image_size }}" 
+                      data-srcset="{{ image | img_url: image_size }},
+                              {{ image | img_url: image_size, scale: 2 }} 2x,
+                              {{ image | img_url: image_size, scale: 3 }} 3x" 
+                      alt="{{ image.alt | escape }}">
+                </div>
+
+                <div class="mobile">
+                  {% assign image_size = "552x" %}
+                  {% assign image = block.settings.image_mobile %}
+
+                  <img class="Image--lazyLoad" 
+                      data-src="{{ image | img_url: image_size }}" 
+                      data-srcset="{{ image | img_url: image_size }},
+                              {{ image | img_url: image_size, scale: 2 }} 2x,
+                              {{ image | img_url: image_size, scale: 3 }} 3x" 
+                      alt="{{ image.alt | escape }}">
+                </div>
+
+                {% if block.settings.overlay_image != blank %}
+                  <div class="s-top-banner__overlay-image">
+                    {% assign image_size = "163x" %}
+                    {% assign image = block.settings.overlay_image %}
+
+                    <img class="Image--lazyLoad"
+                        data-src="{{ image | img_url: image_size }}" 
+                        data-srcset="{{ image | img_url: image_size }},
+                              {{ image | img_url: image_size, scale: 2 }} 2x,
+                              {{ image | img_url: image_size, scale: 3 }} 3x" 
+                        alt="{{  image.alt | escape }}">
+                  </div>    
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <style>
+        .s-top-banner__outer {
+          {% if block.settings.bg_color != blank %}
+            background-color: {{ block.settings.bg_color }};
+          {% endif %}
+
+          {% if block.settings.bg_image_desk != blank %}
+            background-image: url("{{ block.settings.bg_image_desk | img_url: '2048x' }}");
+          {% endif %} 
+
+          {% if block.settings.bg_image_desk != blank  or block.settings.bg_image_mobile != blank or block.settings.bg_image_tablet != blank %}
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+          {% endif %}
+        }  
+
+        {% if block.settings.bg_image_talet != blank %}
+          @media screen and (max-width: 1024px) {
+            .s-top-banner__outer{
+              background-image: url("{{ block.settings.bg_image_tablet | img_url: '1024x' }}");
+            }
+          }
+        {% endif %}
+
+        {% if block.settings.bg_image_mobile != blank %}
+          @media screen and (max-width: 767px) {
+            .s-top-banner__outer{
+              background-image: url("{{ block.settings.bg_image_mobile | img_url: '1024x' }}");
+            }
+          }
+        {% endif %}       
+      </style>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Top banner",
+    "tag": "section",
+    "class": "s-top-banner",
+    "blocks": [
+      {
+        "type": "top_banner",
+        "name": "Top banner",
+        "settings": [
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "type": "radio",
+            "id": "content_position",
+            "options": [
+                { "value": "left", "label": "Left"},
+                { "value": "right", "label": "Right"},
+                { "value": "center", "label": "Center"}
+            ],
+            "label": "Content position"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "sub_title",
+            "type": "richtext",
+            "label": "Sub title"
+          },
+          {
+            "id": "btn_text",
+            "type": "text",
+            "label": "Button text",
+            "default": "Shop all"
+          },
+          {
+            "id": "btn_url",
+            "type": "url",
+            "label": "Button url"
+          },
+          {
+            "id": "image_btitle",
+            "type": "image_picker",
+            "label": "Image below title"
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "image_mobile",
+            "type": "image_picker",
+            "label": "Image (mobile)"
+          },
+          {
+            "id": "overlay_image",
+            "type": "image_picker",
+            "label": "Overlay Image"
+          },
+          {
+            "id": "bg_image_desk",
+            "type": "image_picker",
+            "label": "Background image (desktop)"
+          },
+          {
+            "id": "bg_image_tablet",
+            "type": "image_picker",
+            "label": "Background image (tablet)"
+          },
+          {
+            "id": "bg_image_mobile",
+            "type": "image_picker",
+            "label": "Background image (mobile)"
+          },
+          {
+            "id": "bg_color",
+            "type": "color",
+            "label": "Background color"
+          }
+        ]
+      },
+      {
+        "type": "top_banner_list",
+        "name": "Top Banner List",
+        "settings": [
+          {
+            "id": "banner_page",
+            "type": "page",
+            "label": "Banner Page"
+          },
+          {
+            "id": "banner_item",
+            "type": "text",
+            "label": "Banner List Item"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

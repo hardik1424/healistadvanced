@@ -1,0 +1,80 @@
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+    {% if block.settings.enable_section and block.settings.page == page.handle and block.settings.collection != blank %}
+      <div class="s-benefit-products__outer">
+        <div class="container">
+          <h3 class="s-benefit-products__sub-heading">
+            {{ block.settings.sub_heading }}
+          </h3>
+
+          <h2 class="s-benefit-products__heading">
+            {{ block.settings.heading }}
+          </h2>
+          
+          <div class="s-benefit-products__inner">
+            {% for product in collections[block.settings.collection].products %}
+              {% include 'benefit-product-item' %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {% if block.settings.accent_color != blank %}
+        <style>
+          .s-benefit-products__heading:after,
+          .b-product-item__label {
+            background: {{ block.settings.accent_color }};
+          }
+        </style>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Benefit products",
+    "tag": "section",
+    "class": "s-benefit-products",
+    "blocks": [ 
+      {
+        "type": "page",
+        "name": "Page",
+        "settings": [
+           {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "id": "enable_section",
+            "type": "checkbox",
+            "label": "Enable section",
+            "default": true
+          },
+          {
+            "id": "accent_color",
+            "type": "color",
+            "label": "Accent color",
+            "default": "#f0f0f0"
+          },
+          {
+            "id": "sub_heading",
+            "type": "text",
+            "label": "Sub heading"
+          },
+          {
+            "id": "heading",
+            "type": "text",
+            "label": "Heading"
+          },
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

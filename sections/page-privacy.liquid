@@ -1,0 +1,30 @@
+<section class="Section {% unless section.settings.image %}Section--spacingNormal{% endunless %}">
+
+    <div class="FeatureText__ContentWrapper">
+
+    <div class="page-terms__content-container">
+    {{ section.settings.privacy_copy}}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Privacy Policy",
+  "class": "shopify-section--bordered",
+  "settings": [
+    {
+      "type": "html",
+      "id": "privacy_copy",
+      "label": "Privacy HTML"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Privacy",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
